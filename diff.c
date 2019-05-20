@@ -86,7 +86,6 @@ void init_options_files(int argc, const char* argv[]) {
     const char* arg = *argv;
     setoption(arg, "-v",       "--version",                  &showversion);
     setoption(arg, "-q",       "--brief",                    &showbrief);
-    // setoption(arg, "-i",       "--ignore-case",              &ignorecase);
     setoption(arg, "-s",       "--report-identical-files",   &report_identical);
     setoption(arg, "--normal", NULL,                         &diffnormal);
     setoption(arg, "-y",       "--side-by-side",             &showsidebyside);
@@ -118,6 +117,8 @@ void init_options_files(int argc, const char* argv[]) {
       if(para_equal(p, q) == 0){
         printf("File %s and %s differ\n", files[0], files[1]);
         break;
+      }else{
+        break;
       }
       p = para_next(p);
       q = para_next(q);
@@ -129,8 +130,10 @@ void init_options_files(int argc, const char* argv[]) {
     para* p = para_first(strings1, count1);
     para* q = para_first(strings2, count2);
     int error = 0;
-    while (q != NULL || q != NULL) {
-      error += para_equal(p, q);
+    while (q != NULL || p != NULL) {
+      if(para_equal(p, q) == 0){
+        error++;
+      }
       p = para_next(p);
       q = para_next(q);
     }
